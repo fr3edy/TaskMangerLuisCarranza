@@ -8,11 +8,10 @@ namespace TaskManager.Tests.Infrastructure.Repositories;
 
 public class TaskRepositoryTests
 {
-    // Función auxiliar para obtener un DbContext fresco en cada prueba
     private ApplicationDbContext GetInMemoryDbContext()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) // Nombre único por prueba
+            .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString()) 
             .Options;
 
         return new ApplicationDbContext(options);

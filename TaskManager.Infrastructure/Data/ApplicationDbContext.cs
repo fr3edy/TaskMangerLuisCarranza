@@ -16,11 +16,10 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configuraciones de seguridad y estructura a nivel de base de datos
         modelBuilder.Entity<User>(entity =>
         {
             entity.HasKey(e => e.Id);
-            entity.HasIndex(e => e.Email).IsUnique(); // El email no se puede repetir
+            entity.HasIndex(e => e.Email).IsUnique(); 
             entity.Property(e => e.Email).IsRequired().HasMaxLength(150);
             entity.Property(e => e.PasswordHash).IsRequired();
         });

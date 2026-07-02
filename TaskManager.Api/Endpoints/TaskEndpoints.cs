@@ -10,13 +10,10 @@ public static class TaskEndpoints
 {
     public static void MapTaskEndpoints(this IEndpointRouteBuilder app)
     {
-        // 1. Creamos el grupo. Todo lo que cuelgue de "group" requerirá autorización
-        // y tendrá el prefijo automático (te sugiero /api/tasks si tu front apunta ahí)
         var group = app.MapGroup("/tasks")
                        .WithTags("Tasks")
                        .RequireAuthorization();
 
-        // Función auxiliar para extraer el UserId limpiamente y no repetir código
         static Guid? GetUserId(ClaimsPrincipal user)
         {
             var userIdString = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -31,7 +28,6 @@ public static class TaskEndpoints
             var userId = GetUserId(userClaims);
             if (userId == null) return Results.Unauthorized();
 
-            // Pasamos el UserId para traer SOLAMENTE las tareas de este usuario
             var query = new GetTasksQuery(userId.Value);
             var result = await mediator.Send(query);
             return Results.Ok(result);
@@ -49,7 +45,6 @@ public static class TaskEndpoints
             var finalCommand = command with { UserId = userId.Value };
             var result = await mediator.Send(finalCommand);
 
-            // result aquí devuelve tu TaskResponse (según modificamos antes)
             return Results.Created($"/api/tasks/{result.Id}", result);
         })
         .WithName("CreateTask");
@@ -59,14 +54,9 @@ public static class TaskEndpoints
         // ==========================================
         group.MapPut("/{id:guid}", async (Guid id, [FromBody] UpdateTaskRequest request, ClaimsPrincipal userClaims, IMediator mediator) =>
         {
-            // 1. Validamos quién es el usuario mediante su token
             var userId = GetUserId(userClaims);
             if (userId == null) return Results.Unauthorized();
 
-            // 2. Construimos el Comando combinando las 3 fuentes seguras:
-            // - El ID viene de la URL
-            // - Los datos vienen del Body (request)
-            // - El UserId viene del Token
             var command = new UpdateTaskCommand(
                 id,
                 request.Title,
@@ -75,7 +65,6 @@ public static class TaskEndpoints
                 userId.Value
             );
 
-            // 3. Lo enviamos a MediatR
             var success = await mediator.Send(command);
 
             return success ? Results.NoContent() : Results.NotFound();

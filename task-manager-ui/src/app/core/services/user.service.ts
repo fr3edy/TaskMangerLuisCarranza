@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface UserResponse {
   id: string;
@@ -25,8 +26,7 @@ export interface UserProfileResponse {
   providedIn: 'root'
 })
 export class UserService {
-  // Ajusta el puerto si tu .NET está corriendo en otro
-  private apiUrl = 'https://localhost:7270/api/users'; 
+  private apiUrl = environment.apiUrl + '/api/users';
 
   constructor(private http: HttpClient) {}
 
@@ -61,7 +61,6 @@ export class UserService {
     return this.http.put<any>(`${this.apiUrl}/${id}`, userData, { headers: this.getHeaders() });
   }
 
-  // 5. Eliminar usuario
   deleteUser(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }

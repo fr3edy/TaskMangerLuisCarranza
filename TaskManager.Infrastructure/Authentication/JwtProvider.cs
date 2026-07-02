@@ -14,7 +14,6 @@ public class JwtProvider : IJwtProvider
 
     public JwtProvider(IConfiguration configuration)
     {
-        // El Arquitecto lee de appsettings.json, pero dejamos un fallback para tu demo
         _secretKey = configuration["Jwt:SecretKey"] ?? "EstaEsUnaClaveSuperSecretaParaElTestTecnico123!";
     }
 

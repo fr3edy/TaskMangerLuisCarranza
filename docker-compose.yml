@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend-api:
+    image: corearch-api
+    build:
+      context: . # El contexto es la raíz porque necesita leer todos los proyectos de Clean Architecture
+      dockerfile: TaskManager.Api/Dockerfile
+    ports:
+      - "5200:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Data Source=TaskManager.db
+    networks:
+      - corearch-network
+
+  frontend-ui:
+    image: corearch-ui
+    build:
+      context: ./task-manager-ui
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend-api # Se asegura de que la API levante primero
+    networks:
+      - corearch-network
+
+networks:
+  corearch-network:
+    driver: bridge

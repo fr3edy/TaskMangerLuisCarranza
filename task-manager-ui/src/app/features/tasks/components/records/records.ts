@@ -40,7 +40,6 @@ export class RecordsComponent implements OnInit {
     if (confirm('Are you sure you want to delete this record?')) {
       this.taskService.deleteTask(id).subscribe({
         next: () => {
-          // Recarga la lista después de borrar
           this.loadRecords(); 
         },
         error: (err) => console.error('Error al eliminar', err)
