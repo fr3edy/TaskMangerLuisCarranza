@@ -1,0 +1,45 @@
+# =========================================
+# .NET / C# / Visual Studio
+# =========================================
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+
+# =========================================
+# Angular / Node.js
+# =========================================
+node_modules/
+dist/
+.angular/
+npm-debug.log
+yarn-error.log
+
+# =========================================
+# Bases de Datos (SQLite)
+# =========================================
+# Es vital no subir la base de datos local al repositorio
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# =========================================
+# Logs y Archivos de Entorno
+# =========================================
+Logs/
+*.log
+.env
+.env.local
+.env.*.local
+appsettings.Development.json
+
+# =========================================
+# SO / Varios
+# =========================================
+.DS_Store
+Thumbs.db

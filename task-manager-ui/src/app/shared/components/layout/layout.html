@@ -1,0 +1,70 @@
+<div class="flex h-screen bg-slate-50 font-sans text-slate-900 overflow-hidden">
+  
+  <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col justify-between hidden md:flex shrink-0">
+    <div>
+      <div class="h-16 flex items-center px-6 border-b border-slate-800 gap-3 bg-slate-900">
+        <div class="bg-blue-600 text-white w-8 h-8 rounded flex items-center justify-center shadow-sm">
+          <mat-icon fontIcon="domain"></mat-icon>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-bold text-lg tracking-tight text-white leading-tight">CoreArch Admin</span>
+          <span class="text-[10px] text-slate-400">Enterprise Management</span>
+        </div>
+      </div>
+
+      <nav class="p-4 flex flex-col gap-1">
+        <a routerLink="/dashboard" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-sm font-medium">
+          <mat-icon fontIcon="dashboard" class="!text-[20px] !w-5 !h-5"></mat-icon>
+          <span>Dashboard</span>
+        </a>
+        <a routerLink="/records" routerLinkActive="bg-blue-900/40 text-white border-l-4 border-blue-500 rounded-l-none" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-sm font-medium">
+          <mat-icon fontIcon="folder" class="!text-[20px] !w-5 !h-5"></mat-icon>
+          <span>Records</span>
+        </a>
+        <a routerLink="/users" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-sm font-medium">
+          <mat-icon fontIcon="people_outline" class="!text-[20px] !w-5 !h-5"></mat-icon>
+          <span>Users</span>
+        </a>
+        <a routerLink="/settings" class="flex items-center gap-3 px-4 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors text-sm font-medium">
+          <mat-icon fontIcon="settings" class="!text-[20px] !w-5 !h-5"></mat-icon>
+          <span>Settings</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="p-4 border-t border-slate-800">
+      <button (click)="logout()" class="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-red-400 hover:bg-slate-800 hover:text-red-300 transition-colors text-sm font-medium">
+        <mat-icon fontIcon="logout" class="!text-[20px] !w-5 !h-5"></mat-icon>
+        <span>Cerrar Sesión</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="flex-1 flex flex-col h-full overflow-hidden">
+    
+    <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 z-10 shrink-0">
+      <div class="flex items-center gap-4">
+        <h2 class="text-sm font-bold text-slate-800">Records Manager</h2>
+      </div>
+      
+      <div class="flex-1 max-w-xl mx-8">
+        <div class="relative">
+          <mat-icon fontIcon="search" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 !text-sm !w-4 !h-4"></mat-icon>
+          <input type="text" placeholder="Search records..." class="w-full bg-slate-50 border border-slate-200 rounded-md py-1.5 pl-9 pr-4 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500">
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 text-slate-500">
+        <button class="hover:text-slate-800"><mat-icon fontIcon="notifications_none"></mat-icon></button>
+        <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center border border-slate-200 text-slate-600">
+           <mat-icon fontIcon="person_outline"></mat-icon>
+        </div>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-auto p-8">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+</div>

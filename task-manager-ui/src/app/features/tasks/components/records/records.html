@@ -1,0 +1,97 @@
+<div class="flex flex-col h-full max-w-7xl mx-auto">
+  
+  <div class="flex justify-between items-end mb-6">
+    <div>
+      <h1 class="text-3xl font-bold tracking-tight text-slate-900 mb-1">Records</h1>
+      <p class="text-slate-500 text-sm">Manage and view all enterprise data entries.</p>
+    </div>
+    <div class="flex gap-3">
+      <button class="bg-white border border-slate-300 text-slate-700 rounded-md px-4 py-2 flex items-center gap-2 text-sm font-medium hover:bg-slate-50 transition-colors shadow-sm">
+        <mat-icon fontIcon="filter_list" class="!w-4 !h-4 !text-[18px] leading-none"></mat-icon>
+        Filter
+      </button>
+      <button routerLink="/records/create" class="bg-[#0f62fe] text-white rounded-md px-4 py-2 flex items-center gap-2 text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm">
+        <mat-icon fontIcon="add" class="!w-4 !h-4 !text-[18px] leading-none"></mat-icon>
+        Create New Record
+      </button>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg border border-slate-200 shadow-sm flex flex-col">
+    
+    <div class="flex justify-between items-center px-6 py-4 border-b border-slate-100">
+      <span class="text-sm text-slate-500">Showing results</span>
+      <div class="flex gap-3 text-slate-400">
+        <button class="hover:text-blue-600 transition-colors"><mat-icon fontIcon="refresh" class="!w-5 !h-5 !text-[20px]"></mat-icon></button>
+        <button class="hover:text-blue-600 transition-colors"><mat-icon fontIcon="file_download" class="!w-5 !h-5 !text-[20px]"></mat-icon></button>
+      </div>
+    </div>
+
+    <div *ngIf="isLoading" class="flex flex-col items-center justify-center py-20">
+      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-[#0f62fe]"></div>
+    </div>
+
+    <div *ngIf="!isLoading && tasks.length === 0" class="flex flex-col items-center justify-center py-16 text-center">
+      <mat-icon fontIcon="folder_open" class="!text-5xl !w-12 !h-12 text-slate-300 mb-3"></mat-icon>
+      <h3 class="text-lg font-bold text-slate-800">No records found</h3>
+      <p class="text-slate-500 text-sm max-w-sm mt-1">Get started by creating your first enterprise record.</p>
+    </div>
+
+    <div *ngIf="!isLoading && tasks.length > 0" class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="border-b border-slate-200 text-slate-500 font-mono text-[11px] uppercase tracking-wider font-semibold bg-slate-50/50">
+            <th class="py-3 px-6 w-12 text-center">#</th>
+            <th class="py-3 px-6">ID</th>
+            <th class="py-3 px-6">NAME</th>
+            <th class="py-3 px-6">CATEGORY</th>
+            <th class="py-3 px-6">CREATED DATE</th>
+            <th class="py-3 px-6">STATUS</th>
+            <th class="py-3 px-6 text-center">ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 text-sm">
+          <tr *ngFor="let task of tasks" class="hover:bg-slate-50 transition-colors group">
+            <td class="py-4 px-6 text-center text-slate-400">
+              <mat-icon fontIcon="check_box_outline_blank" class="!w-4 !h-4 !text-[16px] cursor-pointer hover:text-blue-500"></mat-icon>
+            </td>
+            <td class="py-4 px-6 text-slate-500 font-mono text-xs">{{ task.id.substring(0, 8) | uppercase }}</td>
+            <td class="py-4 px-6 font-medium text-slate-800">{{ task.title }}</td>
+            <td class="py-4 px-6 text-slate-500">Record</td>
+            <td class="py-4 px-6 text-slate-500">{{ task.dueDate | date:'mediumDate' }}</td>
+            <td class="py-4 px-6">
+              <span class="text-xs font-semibold px-2 py-1 rounded-md"
+                    [ngClass]="task.status === 'Pending' ? 'text-blue-600 bg-blue-50' : 'text-green-600 bg-green-50'">
+                {{ task.status === 'Pending' ? 'Active' : 'Archived' }}
+              </span>
+            </td>
+            <td class="py-4 px-6 text-center">
+              <div class="flex items-center justify-center gap-2 text-slate-400 opacity-50 group-hover:opacity-100 transition-opacity">
+                <button [routerLink]="['/records/edit', task.id]" class="hover:text-blue-600">
+                  <mat-icon fontIcon="edit" class="!w-4 !h-4 !text-[18px]"></mat-icon>
+                </button>
+                <button (click)="onDelete(task.id)" class="hover:text-red-500">
+                  <mat-icon fontIcon="delete_outline" class="!w-4 !h-4 !text-[18px]"></mat-icon>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div *ngIf="!isLoading && tasks.length > 0" class="flex justify-between items-center px-6 py-4 border-t border-slate-100 bg-slate-50 rounded-b-lg">
+      <span class="text-sm text-slate-500">Showing 1 to {{ tasks.length }} of {{ tasks.length }} results</span>
+      <div class="flex items-center gap-1 text-sm">
+         <button class="px-3 py-1 text-slate-500 hover:text-slate-800 disabled:opacity-50" disabled>&lt; Previous</button>
+         <button class="w-8 h-8 flex items-center justify-center bg-blue-600 text-white rounded-md font-medium shadow-sm">1</button>
+         <button class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-200 rounded-md">2</button>
+         <button class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-200 rounded-md">3</button>
+         <span class="px-1 text-slate-400">...</span>
+         <button class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-200 rounded-md">25</button>
+         <button class="px-3 py-1 text-slate-500 hover:text-blue-600 font-medium">Next &gt;</button>
+      </div>
+    </div>
+
+  </div>
+</div>

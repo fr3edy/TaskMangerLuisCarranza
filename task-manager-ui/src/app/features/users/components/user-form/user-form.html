@@ -1,0 +1,134 @@
+<div class="flex flex-col h-full max-w-6xl mx-auto py-6 px-4">
+  
+  <div class="flex items-center text-sm text-slate-500 mb-6 font-medium">
+    <a routerLink="/users" class="hover:text-blue-600 transition-colors">Users</a>
+    <span class="mx-2">&gt;</span>
+    <span class="text-slate-900 font-semibold">{{ isEditMode ? 'Edit User' : 'Add New User' }}</span>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <div class="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      
+      <div class="p-6 border-b border-slate-100">
+        <h2 class="text-xl font-bold text-slate-900 mb-1">
+          {{ isEditMode ? 'Edit User' : 'Add New User' }}
+        </h2>
+        <p class="text-slate-500 text-sm">
+          {{ isEditMode ? 'Update profile details and access levels.' : 'Configure profile details and system access levels for the new enterprise user.' }}
+        </p>
+      </div>
+
+      <div *ngIf="isLoading" class="flex justify-center py-10">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+
+      <form *ngIf="!isLoading" [formGroup]="userForm" (ngSubmit)="onSubmit()" class="p-6 flex flex-col gap-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Full Name</label>
+            <input type="text" formControlName="name" placeholder="e.g. Robert Arch"
+                   class="w-full bg-white border border-slate-300 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all">
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Email Address</label>
+            <input type="email" formControlName="email" placeholder="robert@enterprise.com"
+                   class="w-full bg-white border border-slate-300 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Role</label>
+            <select formControlName="role" 
+                    class="w-full bg-white border border-slate-300 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all appearance-none">
+              <option value="Administrator">Administrator</option>
+              <option value="Manager">Manager</option>
+              <option value="Developer">Developer</option>
+              <option value="Viewer">Viewer</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">Status</label>
+            <select formControlName="status" 
+                    class="w-full bg-white border border-slate-300 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all appearance-none">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Suspended">Suspended</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1.5">
+              {{ isEditMode ? 'New Password (Optional)' : 'Initial Password' }}
+            </label>
+            <div class="relative">
+              <input type="password" formControlName="password" placeholder="••••••••"
+                     class="w-full bg-white border border-slate-300 rounded-lg py-2.5 px-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-500 transition-all">
+              <button type="button" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600">
+                <mat-icon fontIcon="visibility" class="!w-4 !h-4 !text-[18px]"></mat-icon>
+              </button>
+            </div>
+          </div>
+          
+          <div class="flex items-center pb-2">
+            <input type="checkbox" id="requireChange" class="w-4 h-4 text-blue-600 bg-slate-100 border-slate-300 rounded focus:ring-blue-500">
+            <label for="requireChange" class="ml-2 text-sm text-slate-600">Require password change on first login</label>
+          </div>
+        </div>
+
+        <hr class="border-slate-100 mt-4 mb-2">
+
+        <div class="flex justify-end gap-3">
+          <button type="button" routerLink="/users"
+                  class="bg-white border border-slate-300 text-slate-700 rounded-lg px-6 py-2 text-sm font-semibold hover:bg-slate-50 transition-colors shadow-sm">
+            Cancel
+          </button>
+          <button type="submit" [disabled]="userForm.invalid || isLoading"
+                  class="bg-[#0052cc] text-white rounded-lg px-6 py-2 text-sm font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm">
+            {{ isEditMode ? 'Save Changes' : 'Create User' }}
+          </button>
+        </div>
+        
+      </form>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 shadow-sm">
+        <div class="flex items-center gap-2 text-[#0052cc] mb-4">
+          <mat-icon fontIcon="info" class="!w-5 !h-5 !text-[20px]"></mat-icon>
+          <h3 class="font-bold text-base">User Guidelines</h3>
+        </div>
+        <ul class="space-y-4 text-sm text-slate-600">
+          <li class="flex gap-2 items-start">
+            <mat-icon fontIcon="check_circle_outline" class="!w-4 !h-4 !text-[16px] text-slate-400 mt-0.5"></mat-icon>
+            <span><strong>Email</strong> must be a valid organizational domain.</span>
+          </li>
+          <li class="flex gap-2 items-start">
+            <mat-icon fontIcon="check_circle_outline" class="!w-4 !h-4 !text-[16px] text-slate-400 mt-0.5"></mat-icon>
+            <span><strong>Roles</strong> define system-wide access permissions as per .NET Identity policies.</span>
+          </li>
+          <li class="flex gap-2 items-start">
+            <mat-icon fontIcon="check_circle_outline" class="!w-4 !h-4 !text-[16px] text-slate-400 mt-0.5"></mat-icon>
+            <span><strong>Password</strong> must be at least 8 characters with special symbols.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="relative bg-slate-800 rounded-xl overflow-hidden shadow-sm aspect-video flex flex-col justify-end p-5 text-white" 
+           style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=600&auto=format&fit=crop'); background-size: cover; background-position: center;">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/90 to-transparent"></div>
+        <div class="relative z-10">
+          <span class="text-[10px] font-bold tracking-widest text-slate-300 uppercase mb-1 block">System Architecture</span>
+          <p class="text-sm font-semibold leading-snug">Ensuring robust RBAC implementation across the CoreArch ecosystem.</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
