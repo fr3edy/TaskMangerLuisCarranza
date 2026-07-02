@@ -3,7 +3,7 @@
 ## 📖 Project Overview
 This repository contains a full-stack Task Management application built to demonstrate enterprise-level software engineering practices. The solution strictly adheres to **Clean Architecture** principles, separating business logic from infrastructure and presentation concerns. It utilizes Command Query Responsibility Segregation (CQRS) via MediatR to handle data operations efficiently and securely.
 
-The application allows users to register, securely log in, and manage their personal tasks. Data isolation is enforced at the API level, ensuring users can only interact with their own records.
+The application allows users to register, securely log in, and manage their personal tasks. Data isolation is enforced at the API level, ensuring users can only interact with their own records. The entire architecture is containerized using Docker, allowing for a seamless, one-command deployment.
 
 **Developed by:** Alfredo Carranza
 
@@ -12,7 +12,7 @@ The application allows users to register, securely log in, and manage their pers
 ## 🛠️ Tech Stack
 
 ### Backend
-* **Framework:** .NET 8 (ASP.NET Core Minimal APIs)
+* **Framework:** .NET 10 (ASP.NET Core Minimal APIs)
 * **Architecture:** Clean Architecture & CQRS (MediatR)
 * **ORM:** Entity Framework Core
 * **Database:** SQLite (Chosen for portability and zero-config deployment)
@@ -20,49 +20,38 @@ The application allows users to register, securely log in, and manage their pers
 * **Testing:** xUnit, Moq, FluentAssertions (TDD Approach)
 
 ### Frontend
-* **Framework:** Angular (Standalone Components)
+* **Framework:** Angular 18 (Standalone Components)
 * **Styling:** Tailwind CSS & Angular Material
 * **State & Forms:** RxJS, Reactive Forms
 
+### Infrastructure
+* **Containerization:** Docker & Docker Compose
+* **Web Server:** NGINX
+* **Node Environment:** Node.js 22 (Alpine)
+
 ---
 
-## 🚀 Getting Started
+## 🐳 Getting Started (Docker Deployment)
 
 ### Prerequisites
-* .NET 8.0 SDK
-* Node.js (v18 or higher) & npm
-* Angular CLI (`npm install -g @angular/cli`)
+To run this enterprise architecture demo, you do not need to install .NET or Node.js locally. The only requirements are:
+* **Docker Desktop** (Engine running)
+* **Git** (To clone the repository)
 
-### 1. Backend Setup
-The database is configured to automatically apply migrations and seed initial data upon the first execution. Open a terminal and navigate to the API project directory:
+### Infrastructure Setup
+The infrastructure has been designed with multi-stage Docker builds and environment variable injection for a production-ready simulation. The database is configured to automatically apply migrations and seed initial data upon the first container startup.
 
-```bash
-cd TaskManager.Api
-dotnet run
-The API will start. A SQLite database file (TaskManager.db) will be automatically generated in the root directory.
-
-2. Frontend Setup
-Open a new terminal window and navigate to the Angular project directory:
-
-Bash
-cd task-manager-ui
-npm install
-ng serve
-Open your browser and navigate to http://localhost:4200.
-
-🔐 Demo Credentials
-Upon the initial startup, the database is seeded with a default administrator account. You can access the system using the following credentials:
-
-Email: demo@test.com
-
-Password: Admin123!
+Open a terminal at the root of the cloned repository and execute the orchestrator:
 
 
-🧪 Running Unit Tests
-The backend logic is covered by a comprehensive suite of unit tests focusing on isolated business rules and commands. To run the tests, execute the following command from the root of the solution:
+docker-compose up --build -d
 
-Bash
-dotnet test
+
+(The initial build may take a few minutes as Docker downloads the base Microsoft .NET and Node.js Alpine images).
+
+
+
+---
 
 ## 🏗️ Architecture Highlights
 
@@ -99,10 +88,10 @@ As a lead developer, my approach to GenAI is *"Trust, but Verify through Archite
 * **Debugging Context:** When using AI for debugging, I provide highly specific environmental context rather than generic error codes, treating the AI as a sounding board to validate my hypotheses.
 
 ### 2. AI Prompt Engineering & Validation
-
 **The Task:** Generate the backend scaffold and core implementation for a Task Management System API using C#.
 
 **The Validation Process:**
+
 * **Dependency Rule Check:** I verified that the AI did not violate the Dependency Inversion Principle. I ensured the Domain project had no references to Entity Framework Core or external libraries, keeping the domain pure.
 * **Correcting Anemic Models:** The AI initially generated an anemic database model (only public getters/setters). I corrected this by implementing private setters and encapsulation methods to protect the `TaskItem` business rules.
 * **Handling Security Edge Cases:** The AI suggested a basic CRUD endpoint. I modified it to inject the `ClaimsPrincipal`, ensuring users can only read and delete tasks where the `UserId` matches the JWT token, preventing privilege escalation.
@@ -120,9 +109,6 @@ As a lead developer, my approach to GenAI is *"Trust, but Verify through Archite
 ### 5. Case Study 3: TDD & Business Logic Validation
 * **The Scenario:** Setting up the Unit Tests for the `CreateTaskCommandHandler`.
 * **Validation & Correction:** The AI initially generated a test command passing a string into a field that required a `DateTime`. I manually intercepted the AI's output, correcting the domain model constraints and aligning the Mock setups with the exact signatures of my `ITaskRepository`. I also ensured we strictly tested the "Sad Path"—verifying that the system throws an `ArgumentException` if a task is created with a date in the past.
-
-
-
 
 ## 📦 Technical Decisions & Library Breakdown
 
@@ -167,3 +153,4 @@ As a lead developer, my approach to GenAI is *"Trust, but Verify through Archite
 | **`@angular/core` & `@angular/router`** | Core engine utilized with Standalone Components architecture for SPA routing. |
 | **`@angular/material`** | Official UI component library used for standardized icons and UI elements. |
 | **`tailwindcss`** | Utility-first CSS framework for rapid, responsive UI layout. |
+
