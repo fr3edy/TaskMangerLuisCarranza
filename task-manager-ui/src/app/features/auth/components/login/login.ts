@@ -2,28 +2,23 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
-// Imports de Angular Material
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-
-// Import de tu servicio
 import { AuthService } from '../../../../core/services/auth.service'; 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  // 👇 AQUÍ ESTÁ LA MAGIA: Declaramos todo lo que usa el HTML
   imports: [
-    CommonModule,          // Habilita el *ngIf
-    ReactiveFormsModule,   // Habilita [formGroup] y formControlName
-    MatCheckboxModule,     // Habilita <mat-checkbox>
-    MatIconModule,         // Habilita <mat-icon>
-    MatButtonModule        // Habilita mat-flat-button
+    CommonModule,        
+    ReactiveFormsModule,   
+    MatCheckboxModule,     
+    MatIconModule,         
+    MatButtonModule       
   ],
   templateUrl: './login.html',
-  // styleUrls: ['./login.scss'] // Descomenta esta línea si estás usando un archivo de estilos
+
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -49,7 +44,6 @@ export class LoginComponent {
       
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
-          console.log('¡Login Exitoso! Token guardado:', response.token);
           this.isLoading = false;
           this.router.navigate(['/records']);
         },

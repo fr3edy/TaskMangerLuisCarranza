@@ -92,10 +92,8 @@ public class TaskEndpointsTests : IClassFixture<WebApplicationFactory<Program>>,
 
         var command = new { Title = "Task from Integration Test", Description = "Desc", DueDate = DateTime.UtcNow.AddDays(5) };
 
-        var response = await _client.PostAsJsonAsync("/api/tasks", command); // Ajusta la URL si es necesario
+        var response = await _client.PostAsJsonAsync("/api/tasks", command);
 
-        // 💡 TIP: Vuelve a agregar esta línea, es oro puro si te vuelve a dar un 500, 
-        // ya que te imprimirá el error exacto de tu API en la consola de xUnit.
         var responseString = await response.Content.ReadAsStringAsync();
 
         response.StatusCode.Should().Be(HttpStatusCode.Created, $"Error del servidor: {responseString}");

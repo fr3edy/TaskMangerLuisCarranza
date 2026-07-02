@@ -23,7 +23,6 @@ public static class UserEndpoints
 
         group.MapGet("/profile", async (ClaimsPrincipal userClaims, IMediator mediator) =>
         {
-            // Extrae el correo del token JWT del usuario logueado
             var email = userClaims.FindFirstValue(ClaimTypes.Email) ?? userClaims.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (string.IsNullOrEmpty(email)) return Results.Unauthorized();

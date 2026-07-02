@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { TaskItem, CreateTaskRequest } from '../models/task.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  private readonly apiUrl = 'https://localhost:7270/api/tasks';
+  private readonly apiUrl = environment.apiUrl + '/api/tasks';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}  
 
-  // Auxiliar para obtener los headers con el token JWT guardado
   private getOptions() {
     const token = localStorage.getItem('jwt_token');
     return {

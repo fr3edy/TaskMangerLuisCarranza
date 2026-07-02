@@ -23,7 +23,6 @@ public class GetUsersQueryHandler : IRequestHandler<GetUsersQuery, IEnumerable<U
         {
             Id = u.Id,
             Email = u.Email,
-            // Asumiendo que tu entidad tiene una propiedad Name, si no, puedes poner u.Email temporalmente
             Name = u.Email.Split('@')[0],
             Role = "Administrator",
             Status = "Active"

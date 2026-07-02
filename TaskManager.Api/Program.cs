@@ -41,7 +41,6 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp", policy =>
     {
-        // 🔴 CORRECCIÓN CRÍTICA: Aquí debe ir el puerto de Angular (4200), NO el de .NET
         policy.WithOrigins("http://localhost:4200")
               .AllowAnyHeader()
               .AllowAnyMethod();
